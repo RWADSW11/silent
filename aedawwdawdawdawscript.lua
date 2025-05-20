@@ -1,6 +1,6 @@
 -- init
-if not game:IsLoaded() then 
-    game.Loaded:Wait()
+if not gameIsLoaded() then 
+    game.LoadedWait()
 end
 
 if not syn or not protectgui then
@@ -10,13 +10,13 @@ end
 local SilentAimSettings = {
     Enabled = false,
     
-    ClassName = "Universal Silent Aim - Averiias, Stefanuk12, xaxa",
-    ToggleKey = "RightAlt",
+    ClassName = Universal Silent Aim - Averiias, Stefanuk12, xaxa,
+    ToggleKey = RightAlt,
     
     TeamCheck = false,
     VisibleCheck = false, 
-    TargetPart = "HumanoidRootPart",
-    SilentAimMethod = "Raycast",
+    TargetPart = HumanoidRootPart,
+    SilentAimMethod = Raycast,
     
     FOVRadius = 130,
     FOVVisible = false,
@@ -29,18 +29,18 @@ local SilentAimSettings = {
 
 -- variables
 getgenv().SilentAimSettings = Settings
-local MainFileName = "UniversalSilentAim"
-local SelectedFile, FileToSave = "", ""
+local MainFileName = UniversalSilentAim
+local SelectedFile, FileToSave = , 
 
 local Camera = workspace.CurrentCamera
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local GuiService = game:GetService("GuiService")
-local UserInputService = game:GetService("UserInputService")
-local HttpService = game:GetService("HttpService")
+local Players = gameGetService(Players)
+local RunService = gameGetService(RunService)
+local GuiService = gameGetService(GuiService)
+local UserInputService = gameGetService(UserInputService)
+local HttpService = gameGetService(HttpService)
 
 local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
+local Mouse = LocalPlayerGetMouse()
 
 local GetChildren = game.GetChildren
 local GetPlayers = Players.GetPlayers
@@ -55,10 +55,10 @@ local GetMouseLocation = UserInputService.GetMouseLocation
 local resume = coroutine.resume 
 local create = coroutine.create
 
-local ValidTargetParts = {"Head", "Head"}
+local ValidTargetParts = {Head, HumanoidRootPart}
 local PredictionAmount = 0.165
 
-local mouse_box = Drawing.new("Square")
+local mouse_box = Drawing.new(Square)
 mouse_box.Visible = true 
 mouse_box.ZIndex = 999 
 mouse_box.Color = Color3.fromRGB(54, 57, 241)
@@ -66,7 +66,7 @@ mouse_box.Thickness = 20
 mouse_box.Size = Vector2.new(20, 20)
 mouse_box.Filled = true 
 
-local fov_circle = Drawing.new("Circle")
+local fov_circle = Drawing.new(Circle)
 fov_circle.Thickness = 1
 fov_circle.NumSides = 100
 fov_circle.Radius = 180
@@ -80,38 +80,38 @@ local ExpectedArguments = {
     FindPartOnRayWithIgnoreList = {
         ArgCountRequired = 3,
         Args = {
-            "Instance", "Ray", "table", "boolean", "boolean"
+            Instance, Ray, table, boolean, boolean
         }
     },
     FindPartOnRayWithWhitelist = {
         ArgCountRequired = 3,
         Args = {
-            "Instance", "Ray", "table", "boolean"
+            Instance, Ray, table, boolean
         }
     },
     FindPartOnRay = {
         ArgCountRequired = 2,
         Args = {
-            "Instance", "Ray", "Instance", "boolean", "boolean"
+            Instance, Ray, Instance, boolean, boolean
         }
     },
     Raycast = {
         ArgCountRequired = 3,
         Args = {
-            "Instance", "Vector3", "Vector3", "RaycastParams"
+            Instance, Vector3, Vector3, RaycastParams
         }
     }
 }
 
 function CalculateChance(Percentage)
-    -- // Floor the percentage
+    --  Floor the percentage
     Percentage = math.floor(Percentage)
 
-    -- // Get the chance
-    local chance = math.floor(Random.new().NextNumber(Random.new(), 0, 1) * 100) / 100
+    --  Get the chance
+    local chance = math.floor(Random.new().NextNumber(Random.new(), 0, 1)  100)  100
 
-    -- // Return
-    return chance <= Percentage / 100
+    --  Return
+    return chance = Percentage  100
 end
 
 
@@ -120,32 +120,32 @@ end
         makefolder(MainFileName);
     end
     
-    if not isfolder(string.format("%s/%s", MainFileName, tostring(game.PlaceId))) then 
-        makefolder(string.format("%s/%s", MainFileName, tostring(game.PlaceId)))
+    if not isfolder(string.format(%s%s, MainFileName, tostring(game.PlaceId))) then 
+        makefolder(string.format(%s%s, MainFileName, tostring(game.PlaceId)))
     end
 end
 
-local Files = listfiles(string.format("%s/%s", "UniversalSilentAim", tostring(game.PlaceId)))
+local Files = listfiles(string.format(%s%s, UniversalSilentAim, tostring(game.PlaceId)))
 
 -- functions
 local function GetFiles() -- credits to the linoria lib for this function, listfiles returns the files full path and its annoying
 	local out = {}
 	for i = 1, #Files do
 		local file = Files[i]
-		if file:sub(-4) == '.lua' then
+		if filesub(-4) == '.lua' then
 			-- i hate this but it has to be done ...
 
-			local pos = file:find('.lua', 1, true)
+			local pos = filefind('.lua', 1, true)
 			local start = pos
 
-			local char = file:sub(pos, pos)
-			while char ~= '/' and char ~= '\\' and char ~= '' do
+			local char = filesub(pos, pos)
+			while char ~= '' and char ~= '' and char ~= '' do
 				pos = pos - 1
-				char = file:sub(pos, pos)
+				char = filesub(pos, pos)
 			end
 
-			if char == '/' or char == '\\' then
-				table.insert(out, file:sub(pos + 1, start - 1))
+			if char == '' or char == '' then
+				table.insert(out, filesub(pos + 1, start - 1))
 			end
 		end
 	end
@@ -154,15 +154,15 @@ local function GetFiles() -- credits to the linoria lib for this function, listf
 end
 
 local function UpdateFile(FileName)
-    assert(FileName or FileName == "string", "oopsies");
-    writefile(string.format("%s/%s/%s.lua", MainFileName, tostring(game.PlaceId), FileName), HttpService:JSONEncode(SilentAimSettings))
+    assert(FileName or FileName == string, oopsies);
+    writefile(string.format(%s%s%s.lua, MainFileName, tostring(game.PlaceId), FileName), HttpServiceJSONEncode(SilentAimSettings))
 end
 
 local function LoadFile(FileName)
-    assert(FileName or FileName == "string", "oopsies");
+    assert(FileName or FileName == string, oopsies);
     
-    local File = string.format("%s/%s/%s.lua", MainFileName, tostring(game.PlaceId), FileName)
-    local ConfigData = HttpService:JSONDecode(readfile(File))
+    local File = string.format(%s%s%s.lua, MainFileName, tostring(game.PlaceId), FileName)
+    local ConfigData = HttpServiceJSONDecode(readfile(File))
     for Index, Value in next, ConfigData do
         SilentAimSettings[Index] = Value
     end
@@ -175,7 +175,7 @@ end
 
 local function ValidateArguments(Args, RayMethod)
     local Matches = 0
-    if #Args < RayMethod.ArgCountRequired then
+    if #Args  RayMethod.ArgCountRequired then
         return false
     end
     for Pos, Argument in next, Args do
@@ -183,11 +183,11 @@ local function ValidateArguments(Args, RayMethod)
             Matches = Matches + 1
         end
     end
-    return Matches >= RayMethod.ArgCountRequired
+    return Matches = RayMethod.ArgCountRequired
 end
 
 local function getDirection(Origin, Position)
-    return (Position - Origin).Unit * 1000
+    return (Position - Origin).Unit  1000
 end
 
 local function getMousePosition()
@@ -200,14 +200,14 @@ local function IsPlayerVisible(Player)
     
     if not (PlayerCharacter or LocalPlayerCharacter) then return end 
     
-    local PlayerRoot = FindFirstChild(PlayerCharacter, Options.TargetPart.Value) or FindFirstChild(PlayerCharacter, "Head")
+    local PlayerRoot = FindFirstChild(PlayerCharacter, Options.TargetPart.Value) or FindFirstChild(PlayerCharacter, HumanoidRootPart)
     
     if not PlayerRoot then return end 
     
     local CastPoints, IgnoreList = {PlayerRoot.Position, LocalPlayerCharacter, PlayerCharacter}, {LocalPlayerCharacter, PlayerCharacter}
     local ObscuringObjects = #GetPartsObscuringTarget(Camera, CastPoints, IgnoreList)
     
-    return ((ObscuringObjects == 0 and true) or (ObscuringObjects > 0 and false))
+    return ((ObscuringObjects == 0 and true) or (ObscuringObjects  0 and false))
 end
 
 local function getClosestPlayer()
@@ -223,16 +223,16 @@ local function getClosestPlayer()
         
         if Toggles.VisibleCheck.Value and not IsPlayerVisible(Player) then continue end
 
-        local HumanoidRootPart = FindFirstChild(Character, "HumanoidRootPart")
-        local Humanoid = FindFirstChild(Character, "Humanoid")
-        if not HumanoidRootPart or not Humanoid or Humanoid and Humanoid.Health <= 0 then continue end
+        local HumanoidRootPart = FindFirstChild(Character, HumanoidRootPart)
+        local Humanoid = FindFirstChild(Character, Humanoid)
+        if not HumanoidRootPart or not Humanoid or Humanoid and Humanoid.Health = 0 then continue end
 
         local ScreenPosition, OnScreen = getPositionOnScreen(HumanoidRootPart.Position)
         if not OnScreen then continue end
 
         local Distance = (getMousePosition() - ScreenPosition).Magnitude
-        if Distance <= (DistanceToMouse or Options.Radius.Value or 2000) then
-            Closest = ((Options.TargetPart.Value == "Random" and Character[ValidTargetParts[math.random(1, #ValidTargetParts)]]) or Character[Options.TargetPart.Value])
+        if Distance = (DistanceToMouse or Options.Radius.Value or 2000) then
+            Closest = ((Options.TargetPart.Value == Random and Character[ValidTargetParts[math.random(1, #ValidTargetParts)]]) or Character[Options.TargetPart.Value])
             DistanceToMouse = Distance
         end
     end
@@ -240,184 +240,42 @@ local function getClosestPlayer()
 end
 
 -- ui creating & handling
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua"))()
-Library:SetWatermark("github.com/Averiias")
+local Library = loadstring(gameHttpGet(httpsraw.githubusercontent.comviolin-suzutsukiLinoriaLibmainLibrary.lua))()
+LibrarySetWatermark(github.comAveriias)
 
-local Window = Library:CreateWindow({Title = 'Universal Silent Aim', Center = true, AutoShow = true, TabPadding = 8, MenuFadeTime = 0.2})
-local GeneralTab = Window:AddTab("General")
-local MainBOX = GeneralTab:AddLeftTabbox("Main") do
-    local Main = MainBOX:AddTab("Main")
+local Window = LibraryCreateWindow({Title = 'Universal Silent Aim', Center = true, AutoShow = true, TabPadding = 8, MenuFadeTime = 0.2})
+local GeneralTab = WindowAddTab(General)
+local MainBOX = GeneralTabAddLeftTabbox(Main) do
+    local Main = MainBOXAddTab(Main)
     
-    Main:AddToggle("aim_Enabled", {Text = "Enabled"}):AddKeyPicker("aim_Enabled_KeyPicker", {Default = "RightAlt", SyncToggleState = true, Mode = "Toggle", Text = "Enabled", NoUI = false});
-    Options.aim_Enabled_KeyPicker:OnClick(function()
+    MainAddToggle(aim_Enabled, {Text = Enabled})AddKeyPicker(aim_Enabled_KeyPicker, {Default = RightAlt, SyncToggleState = true, Mode = Toggle, Text = Enabled, NoUI = false});
+    Options.aim_Enabled_KeyPickerOnClick(function()
         SilentAimSettings.Enabled = not SilentAimSettings.Enabled
         
         Toggles.aim_Enabled.Value = SilentAimSettings.Enabled
-        Toggles.aim_Enabled:SetValue(SilentAimSettings.Enabled)
+        Toggles.aim_EnabledSetValue(SilentAimSettings.Enabled)
         
         mouse_box.Visible = SilentAimSettings.Enabled
     end)
     
-    Main:AddToggle("TeamCheck", {Text = "Team Check", Default = SilentAimSettings.TeamCheck}):OnChanged(function()
+    MainAddToggle(TeamCheck, {Text = Team Check, Default = SilentAimSettings.TeamCheck})OnChanged(function()
         SilentAimSettings.TeamCheck = Toggles.TeamCheck.Value
     end)
-    Main:AddToggle("VisibleCheck", {Text = "Visible Check", Default = SilentAimSettings.VisibleCheck}):OnChanged(function()
+    MainAddToggle(VisibleCheck, {Text = Visible Check, Default = SilentAimSettings.VisibleCheck})OnChanged(function()
         SilentAimSettings.VisibleCheck = Toggles.VisibleCheck.Value
     end)
-    Main:AddDropdown("TargetPart", {AllowNull = true, Text = "Target Part", Default = SilentAimSettings.TargetPart, Values = {"Head", "-- Cool UI Addition (append this at the end of your script) --
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "SilentAimCoolUI"
-ScreenGui.Parent = PlayerGui
-
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 280, 0, 400)
-MainFrame.Position = UDim2.new(0.7, 0, 0.2, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-MainFrame.BorderSizePixel = 0
-MainFrame.Parent = ScreenGui
-MainFrame.Active = true
-MainFrame.Draggable = true
-
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Padding = UDim.new(0, 8)
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Parent = MainFrame
-UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
-
-local function CreateToggle(text, default, callback)
-    local container = Instance.new("Frame")
-    container.Size = UDim2.new(1, -16, 0, 30)
-    container.BackgroundTransparency = 1
-    container.LayoutOrder = 1
-    
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(0.7, 0, 1, 0)
-    label.BackgroundTransparency = 1
-    label.Text = text
-    label.TextColor3 = Color3.new(1,1,1)
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Font = Enum.Font.SourceSans
-    label.TextSize = 18
-    label.Parent = container
-
-    local toggle = Instance.new("TextButton")
-    toggle.Size = UDim2.new(0.3, 0, 1, 0)
-    toggle.Position = UDim2.new(0.7, 0, 0, 0)
-    toggle.BackgroundColor3 = default and Color3.fromRGB(54, 57, 241) or Color3.fromRGB(70,70,70)
-    toggle.Text = default and "ON" or "OFF"
-    toggle.TextColor3 = Color3.new(1,1,1)
-    toggle.Font = Enum.Font.SourceSansBold
-    toggle.TextSize = 18
-    toggle.Parent = container
-
-    toggle.MouseButton1Click:Connect(function()
-        local enabled = toggle.Text == "OFF"
-        toggle.Text = enabled and "ON" or "OFF"
-        toggle.BackgroundColor3 = enabled and Color3.fromRGB(54, 57, 241) or Color3.fromRGB(70,70,70)
-        callback(enabled)
-    end)
-
-    return container
-end
-
-local function CreateSlider(text, min, max, default, callback)
-    local container = Instance.new("Frame")
-    container.Size = UDim2.new(1, -16, 0, 50)
-    container.BackgroundTransparency = 1
-    container.LayoutOrder = 2
-
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, 0, 0, 18)
-    label.BackgroundTransparency = 1
-    label.Text = text .. " (" .. tostring(default) .. ")"
-    label.TextColor3 = Color3.new(1,1,1)
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Font = Enum.Font.SourceSans
-    label.TextSize = 16
-    label.Parent = container
-
-    local sliderBar = Instance.new("Frame")
-    sliderBar.Size = UDim2.new(1, 0, 0, 12)
-    sliderBar.Position = UDim2.new(0, 0, 0, 30)
-    sliderBar.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-    sliderBar.Parent = container
-
-    local sliderFill = Instance.new("Frame")
-    sliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-    sliderFill.BackgroundColor3 = Color3.fromRGB(54, 57, 241)
-    sliderFill.Parent = sliderBar
-
-    local dragging = false
-    sliderBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-        end
-    end)
-    sliderBar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-    sliderBar.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mousePos = input.Position.X - sliderBar.AbsolutePosition.X
-            local relative = math.clamp(mousePos / sliderBar.AbsoluteSize.X, 0, 1)
-            sliderFill.Size = UDim2.new(relative, 0, 1, 0)
-            local value = math.floor(min + (max - min) * relative)
-            label.Text = text .. " (" .. tostring(value) .. ")"
-            callback(value)
-        end
-    end)
-
-    return container
-end
-
--- Add Toggles
-MainFrame:AddChild(CreateToggle("Enable Silent Aim", SilentAimSettings.Enabled, function(val)
-    SilentAimSettings.Enabled = val
-    Toggles.aim_Enabled:SetValue(val)
-end))
-
-MainFrame:AddChild(CreateToggle("Team Check", SilentAimSettings.TeamCheck, function(val)
-    SilentAimSettings.TeamCheck = val
-    Toggles.TeamCheck:SetValue(val)
-end))
-
-MainFrame:AddChild(CreateToggle("Visible Check", SilentAimSettings.VisibleCheck, function(val)
-    SilentAimSettings.VisibleCheck = val
-    Toggles.VisibleCheck:SetValue(val)
-end))
-
--- Add Slider for HitChance
-MainFrame:AddChild(CreateSlider("Hit Chance", 0, 100, SilentAimSettings.HitChance, function(val)
-    SilentAimSettings.HitChance = val
-    Options.HitChance:SetValue(val)
-end))
-
--- Add Slider for FOV Radius
-MainFrame:AddChild(CreateSlider("FOV Radius", 0, 360, SilentAimSettings.FOVRadius, function(val)
-    SilentAimSettings.FOVRadius = val
-    Options.Radius:SetValue(val)
-end))
-
-", "Random"}}):OnChanged(function()
+    MainAddDropdown(TargetPart, {AllowNull = true, Text = Target Part, Default = SilentAimSettings.TargetPart, Values = {Head, HumanoidRootPart, Random}})OnChanged(function()
         SilentAimSettings.TargetPart = Options.TargetPart.Value
     end)
-    Main:AddDropdown("Method", {AllowNull = true, Text = "Silent Aim Method", Default = SilentAimSettings.SilentAimMethod, Values = {
-        "Raycast","FindPartOnRay",
-        "FindPartOnRayWithWhitelist",
-        "FindPartOnRayWithIgnoreList",
-        "Mouse.Hit/Target"
-    }}):OnChanged(function() 
+    MainAddDropdown(Method, {AllowNull = true, Text = Silent Aim Method, Default = SilentAimSettings.SilentAimMethod, Values = {
+        Raycast,FindPartOnRay,
+        FindPartOnRayWithWhitelist,
+        FindPartOnRayWithIgnoreList,
+        Mouse.HitTarget
+    }})OnChanged(function() 
         SilentAimSettings.SilentAimMethod = Options.Method.Value 
     end)
-    Main:AddSlider('HitChance', {
+    MainAddSlider('HitChance', {
         Text = 'Hit chance',
         Default = 100,
         Min = 0,
@@ -426,92 +284,92 @@ end))
     
         Compact = false,
     })
-    Options.HitChance:OnChanged(function()
+    Options.HitChanceOnChanged(function()
         SilentAimSettings.HitChance = Options.HitChance.Value
     end)
 end
 
-local MiscellaneousBOX = GeneralTab:AddLeftTabbox("Miscellaneous")
-local FieldOfViewBOX = GeneralTab:AddLeftTabbox("Field Of View") do
-    local Main = FieldOfViewBOX:AddTab("Visuals")
+local MiscellaneousBOX = GeneralTabAddLeftTabbox(Miscellaneous)
+local FieldOfViewBOX = GeneralTabAddLeftTabbox(Field Of View) do
+    local Main = FieldOfViewBOXAddTab(Visuals)
     
-    Main:AddToggle("Visible", {Text = "Show FOV Circle"}):AddColorPicker("Color", {Default = Color3.fromRGB(54, 57, 241)}):OnChanged(function()
+    MainAddToggle(Visible, {Text = Show FOV Circle})AddColorPicker(Color, {Default = Color3.fromRGB(54, 57, 241)})OnChanged(function()
         fov_circle.Visible = Toggles.Visible.Value
         SilentAimSettings.FOVVisible = Toggles.Visible.Value
     end)
-    Main:AddSlider("Radius", {Text = "FOV Circle Radius", Min = 0, Max = 360, Default = 130, Rounding = 0}):OnChanged(function()
+    MainAddSlider(Radius, {Text = FOV Circle Radius, Min = 0, Max = 360, Default = 130, Rounding = 0})OnChanged(function()
         fov_circle.Radius = Options.Radius.Value
         SilentAimSettings.FOVRadius = Options.Radius.Value
     end)
-    Main:AddToggle("MousePosition", {Text = "Show Silent Aim Target"}):AddColorPicker("MouseVisualizeColor", {Default = Color3.fromRGB(54, 57, 241)}):OnChanged(function()
+    MainAddToggle(MousePosition, {Text = Show Silent Aim Target})AddColorPicker(MouseVisualizeColor, {Default = Color3.fromRGB(54, 57, 241)})OnChanged(function()
         mouse_box.Visible = Toggles.MousePosition.Value 
         SilentAimSettings.ShowSilentAimTarget = Toggles.MousePosition.Value 
     end)
-    local PredictionTab = MiscellaneousBOX:AddTab("Prediction")
-    PredictionTab:AddToggle("Prediction", {Text = "Mouse.Hit/Target Prediction"}):OnChanged(function()
+    local PredictionTab = MiscellaneousBOXAddTab(Prediction)
+    PredictionTabAddToggle(Prediction, {Text = Mouse.HitTarget Prediction})OnChanged(function()
         SilentAimSettings.MouseHitPrediction = Toggles.Prediction.Value
     end)
-    PredictionTab:AddSlider("Amount", {Text = "Prediction Amount", Min = 0.165, Max = 1, Default = 0.165, Rounding = 3}):OnChanged(function()
+    PredictionTabAddSlider(Amount, {Text = Prediction Amount, Min = 0.165, Max = 1, Default = 0.165, Rounding = 3})OnChanged(function()
         PredictionAmount = Options.Amount.Value
         SilentAimSettings.MouseHitPredictionAmount = Options.Amount.Value
     end)
 end
 
-local CreateConfigurationBOX = GeneralTab:AddRightTabbox("Create Configuration") do 
-    local Main = CreateConfigurationBOX:AddTab("Create Configuration")
+local CreateConfigurationBOX = GeneralTabAddRightTabbox(Create Configuration) do 
+    local Main = CreateConfigurationBOXAddTab(Create Configuration)
     
-    Main:AddInput("CreateConfigTextBox", {Default = "", Numeric = false, Finished = false, Text = "Create Configuration to Create", Tooltip = "Creates a configuration file containing settings you can save and load", Placeholder = "File Name here"}):OnChanged(function()
-        if Options.CreateConfigTextBox.Value and string.len(Options.CreateConfigTextBox.Value) ~= "" then 
+    MainAddInput(CreateConfigTextBox, {Default = , Numeric = false, Finished = false, Text = Create Configuration to Create, Tooltip = Creates a configuration file containing settings you can save and load, Placeholder = File Name here})OnChanged(function()
+        if Options.CreateConfigTextBox.Value and string.len(Options.CreateConfigTextBox.Value) ~=  then 
             FileToSave = Options.CreateConfigTextBox.Value
         end
     end)
     
-    Main:AddButton("Create Configuration File", function()
-        if FileToSave ~= "" or FileToSave ~= nil then 
+    MainAddButton(Create Configuration File, function()
+        if FileToSave ~=  or FileToSave ~= nil then 
             UpdateFile(FileToSave)
         end
     end)
 end
 
-local SaveConfigurationBOX = GeneralTab:AddRightTabbox("Save Configuration") do 
-    local Main = SaveConfigurationBOX:AddTab("Save Configuration")
-    Main:AddDropdown("SaveConfigurationDropdown", {AllowNull = true, Values = GetFiles(), Text = "Choose Configuration to Save"})
-    Main:AddButton("Save Configuration", function()
+local SaveConfigurationBOX = GeneralTabAddRightTabbox(Save Configuration) do 
+    local Main = SaveConfigurationBOXAddTab(Save Configuration)
+    MainAddDropdown(SaveConfigurationDropdown, {AllowNull = true, Values = GetFiles(), Text = Choose Configuration to Save})
+    MainAddButton(Save Configuration, function()
         if Options.SaveConfigurationDropdown.Value then 
             UpdateFile(Options.SaveConfigurationDropdown.Value)
         end
     end)
 end
 
-local LoadConfigurationBOX = GeneralTab:AddRightTabbox("Load Configuration") do 
-    local Main = LoadConfigurationBOX:AddTab("Load Configuration")
+local LoadConfigurationBOX = GeneralTabAddRightTabbox(Load Configuration) do 
+    local Main = LoadConfigurationBOXAddTab(Load Configuration)
     
-    Main:AddDropdown("LoadConfigurationDropdown", {AllowNull = true, Values = GetFiles(), Text = "Choose Configuration to Load"})
-    Main:AddButton("Load Configuration", function()
+    MainAddDropdown(LoadConfigurationDropdown, {AllowNull = true, Values = GetFiles(), Text = Choose Configuration to Load})
+    MainAddButton(Load Configuration, function()
         if table.find(GetFiles(), Options.LoadConfigurationDropdown.Value) then
             LoadFile(Options.LoadConfigurationDropdown.Value)
             
-            Toggles.TeamCheck:SetValue(SilentAimSettings.TeamCheck)
-            Toggles.VisibleCheck:SetValue(SilentAimSettings.VisibleCheck)
-            Options.TargetPart:SetValue(SilentAimSettings.TargetPart)
-            Options.Method:SetValue(SilentAimSettings.SilentAimMethod)
-            Toggles.Visible:SetValue(SilentAimSettings.FOVVisible)
-            Options.Radius:SetValue(SilentAimSettings.FOVRadius)
-            Toggles.MousePosition:SetValue(SilentAimSettings.ShowSilentAimTarget)
-            Toggles.Prediction:SetValue(SilentAimSettings.MouseHitPrediction)
-            Options.Amount:SetValue(SilentAimSettings.MouseHitPredictionAmount)
-            Options.HitChance:SetValue(SilentAimSettings.HitChance)
+            Toggles.TeamCheckSetValue(SilentAimSettings.TeamCheck)
+            Toggles.VisibleCheckSetValue(SilentAimSettings.VisibleCheck)
+            Options.TargetPartSetValue(SilentAimSettings.TargetPart)
+            Options.MethodSetValue(SilentAimSettings.SilentAimMethod)
+            Toggles.VisibleSetValue(SilentAimSettings.FOVVisible)
+            Options.RadiusSetValue(SilentAimSettings.FOVRadius)
+            Toggles.MousePositionSetValue(SilentAimSettings.ShowSilentAimTarget)
+            Toggles.PredictionSetValue(SilentAimSettings.MouseHitPrediction)
+            Options.AmountSetValue(SilentAimSettings.MouseHitPredictionAmount)
+            Options.HitChanceSetValue(SilentAimSettings.HitChance)
         end
     end)
 end
 
 resume(create(function()
-    RenderStepped:Connect(function()
+    RenderSteppedConnect(function()
         if Toggles.MousePosition.Value and Toggles.aim_Enabled.Value then
             if getClosestPlayer() then 
                 local Root = getClosestPlayer().Parent.PrimaryPart or getClosestPlayer()
                 local RootToViewportPoint, IsOnScreen = WorldToViewportPoint(Camera, Root.Position);
-                -- using PrimaryPart instead because if your Target Part is "Random" it will flicker the square between the Target's Head and HumanoidRootPart (its annoying)
+                -- using PrimaryPart instead because if your Target Part is Random it will flicker the square between the Target's Head and HumanoidRootPart (its annoying)
                 
                 mouse_box.Visible = IsOnScreen
                 mouse_box.Position = Vector2.new(RootToViewportPoint.X, RootToViewportPoint.Y)
@@ -531,13 +389,13 @@ end))
 
 -- hooks
 local oldNamecall
-oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
+oldNamecall = hookmetamethod(game, __namecall, newcclosure(function(...)
     local Method = getnamecallmethod()
     local Arguments = {...}
     local self = Arguments[1]
     local chance = CalculateChance(SilentAimSettings.HitChance)
     if Toggles.aim_Enabled.Value and self == workspace and not checkcaller() and chance == true then
-        if Method == "FindPartOnRayWithIgnoreList" and Options.Method.Value == Method then
+        if Method == FindPartOnRayWithIgnoreList and Options.Method.Value == Method then
             if ValidateArguments(Arguments, ExpectedArguments.FindPartOnRayWithIgnoreList) then
                 local A_Ray = Arguments[2]
 
@@ -550,7 +408,7 @@ oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
                     return oldNamecall(unpack(Arguments))
                 end
             end
-        elseif Method == "FindPartOnRayWithWhitelist" and Options.Method.Value == Method then
+        elseif Method == FindPartOnRayWithWhitelist and Options.Method.Value == Method then
             if ValidateArguments(Arguments, ExpectedArguments.FindPartOnRayWithWhitelist) then
                 local A_Ray = Arguments[2]
 
@@ -563,7 +421,7 @@ oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
                     return oldNamecall(unpack(Arguments))
                 end
             end
-        elseif (Method == "FindPartOnRay" or Method == "findPartOnRay") and Options.Method.Value:lower() == Method:lower() then
+        elseif (Method == FindPartOnRay or Method == findPartOnRay) and Options.Method.Valuelower() == Methodlower() then
             if ValidateArguments(Arguments, ExpectedArguments.FindPartOnRay) then
                 local A_Ray = Arguments[2]
 
@@ -576,7 +434,7 @@ oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
                     return oldNamecall(unpack(Arguments))
                 end
             end
-        elseif Method == "Raycast" and Options.Method.Value == Method then
+        elseif Method == Raycast and Options.Method.Value == Method then
             if ValidateArguments(Arguments, ExpectedArguments.Raycast) then
                 local A_Origin = Arguments[2]
 
@@ -593,19 +451,19 @@ oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
 end))
 
 local oldIndex = nil 
-oldIndex = hookmetamethod(game, "__index", newcclosure(function(self, Index)
-    if self == Mouse and not checkcaller() and Toggles.aim_Enabled.Value and Options.Method.Value == "Mouse.Hit/Target" and getClosestPlayer() then
+oldIndex = hookmetamethod(game, __index, newcclosure(function(self, Index)
+    if self == Mouse and not checkcaller() and Toggles.aim_Enabled.Value and Options.Method.Value == Mouse.HitTarget and getClosestPlayer() then
         local HitPart = getClosestPlayer()
          
-        if Index == "Target" or Index == "target" then 
+        if Index == Target or Index == target then 
             return HitPart
-        elseif Index == "Hit" or Index == "hit" then 
-            return ((Toggles.Prediction.Value and (HitPart.CFrame + (HitPart.Velocity * PredictionAmount))) or (not Toggles.Prediction.Value and HitPart.CFrame))
-        elseif Index == "X" or Index == "x" then 
+        elseif Index == Hit or Index == hit then 
+            return ((Toggles.Prediction.Value and (HitPart.CFrame + (HitPart.Velocity  PredictionAmount))) or (not Toggles.Prediction.Value and HitPart.CFrame))
+        elseif Index == X or Index == x then 
             return self.X 
-        elseif Index == "Y" or Index == "y" then 
+        elseif Index == Y or Index == y then 
             return self.Y 
-        elseif Index == "UnitRay" then 
+        elseif Index == UnitRay then 
             return Ray.new(self.Origin, (self.Hit - self.Origin).Unit)
         end
     end
